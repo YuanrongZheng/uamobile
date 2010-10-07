@@ -187,6 +187,10 @@ def test_is_bogus():
     for ip, expected in (
         ('210.153.84.0', False),
         ('210.230.128.224', True),
+        ('202.229.176.1', False),
+        ('202.229.177.1', False),
+        ('202.229.178.1', False),
+        ('202.229.179.1', True),
         ):
         yield func, ip, None, expected
 
