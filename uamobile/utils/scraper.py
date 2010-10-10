@@ -59,7 +59,7 @@ class WILLCOMCIDR(CIDR):
         for td in doc.xpath("//table[@width='100%' and @cellspacing='1' and @cellpadding='3']/tr/td"):
             if td.attrib.get('colspan') == "4":
                 sep += 1
-                if sep > 1:
+                if sep > 2:
                     break
             else:
                 if td.attrib.get('align') == 'center' and td.attrib.get('bgcolor') == 'white':

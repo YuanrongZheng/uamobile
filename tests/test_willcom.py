@@ -58,6 +58,10 @@ def test_is_bogus():
     for ip, expected in (
         ('210.230.128.224', True),
         ('61.198.128.0', False),
+        ('114.20.67.0', False), # Added at 2009/12/24
+        ('114.21.255.0', True), # deleted at 2010/10/6
+        ('61.198.255.0', False), # Added at 2010/10/6
+        ('210.255.190.0', False), # Added at 2010/10/6
         ):
         yield func, ip, expected
 
