@@ -5,7 +5,7 @@ import pprint
 from lxml import etree
 from StringIO import StringIO
 
-URL = 'http://www.nttdocomo.co.jp/service/imode/make/content/spec/screen_area/index.html'
+URL = 'http://www.nttdocomo.co.jp/service/developer/make/content/spec/screen_area/index.html'
 
 MODEL_RE   = re.compile(r'^[A-Z]{1,2}\d+')
 DISPLAY_RE = re.compile(r'[^\d]*(\d+)[^\d]+(\d+).*$', re.S)

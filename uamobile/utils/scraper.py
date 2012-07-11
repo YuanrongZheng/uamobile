@@ -22,10 +22,10 @@ class CIDR(object):
 
 
 class DoCoMoCIDR(CIDR):
-    url = 'http://www.nttdocomo.co.jp/service/imode/make/content/ip/'
+    url = 'http://www.nttdocomo.co.jp/service/developer/make/content/ip/index.html'
 
     def do_scrape(self, doc):
-        return [x.text for x in doc.xpath('//div[@class="boxArea" and count(preceding-sibling::*)=2]/div/div[@class="section"]/ul[@class="normal txt" and position()=1]/li')]
+        return [x.text for x in doc.xpath('//div[@id="maincol"]/div[@class="boxArea"][1]/div/div[@class="section"]/ul[@class="normal txt"][1]/li')]
 
 
 class EZWebCIDR(CIDR):

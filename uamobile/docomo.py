@@ -5,7 +5,7 @@ from uamobile.docomodisplaymap import DISPLAYMAP_DOCOMO
 class DoCoMoUserAgent(UserAgent):
     """
     NTT DoCoMo implementation
-    see also http://www.nttdocomo.co.jp/service/imode/make/content/spec/useragent/index.html
+    see also http://www.nttdocomo.co.jp/service/developer/make/content/spec/useragent/index.html
 
     property "cache" returns cache size as kilobytes unit.
 
