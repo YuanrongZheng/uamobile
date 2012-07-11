@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import urllib2
-from lxml import etree
+from lxml import html
 
 class CIDR(object):
     # subclass must override this property
@@ -8,7 +8,7 @@ class CIDR(object):
 
     def scrape(self):
         stream = self.get_stream()
-        doc = etree.parse(stream, etree.HTMLParser())
+        doc = html.parse(stream)
         res = []
         for addr in self.do_scrape(doc):
             res.append(str(addr))
@@ -33,13 +33,13 @@ class EZWebCIDR(CIDR):
 
     def do_scrape(self, doc):
         res = []
-        rows = doc.xpath("""//table[@cellspacing="1"]/tr[@bgcolor="#ffffff"]""")
+        rows = doc.xpath("""//a[@name="Body"]/following-sibling::table//table//table[@cellspacing="1"]/tr[@bgcolor="#ffffff"]""")
         for row in rows:
-            cols = row.xpath('./td/div[@class="TableText"]/text()')
-            if len(cols) == 4:
+            cols = row.xpath('./td/div[@class="TableText"]')
+            if cols[1].xpath('*//s'):
                 # deprecated
                 continue
-            res.append('%s%s' % (cols[1], cols[2]))
+            res.append('%s%s' % (cols[1].text_content(), cols[2].text_content()))
         return res
 
 
