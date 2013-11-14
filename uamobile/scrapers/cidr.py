@@ -5,21 +5,20 @@ class DoCoMoScraper(Scraper):
     url = 'http://www.nttdocomo.co.jp/service/imode/make/content/ip/'
 
     def do_scrape(self, doc):
-        return [str(x.text) for x in doc.xpath('//div[@class="boxArea" and count(preceding-sibling::*)=2]/div/div[@class="section"]/ul[@class="normal txt" and position()=1]/li')]
-
+        return [str(x.text) for x in doc.xpath('//div[@id="maincol"]/div[@class="boxArea"][1]/div/div[@class="section"]/ul[@class="normal txt"][1]/li')]
 
 class EZWebScraper(Scraper):
     url = 'http://www.au.kddi.com/ezfactory/tec/spec/ezsava_ip.html'
 
     def do_scrape(self, doc):
         res = []
-        rows = doc.xpath("""//table[@cellspacing="1"]/tr[@bgcolor="#ffffff"]""")
+        rows = doc.xpath("""//a[@name="Body"]/following-sibling::table//table//table[@cellspacing="1"]/tr[@bgcolor="#ffffff"]""")
         for row in rows:
-            cols = row.xpath('./td/div[@class="TableText"]/text()')
-            if len(cols) == 4:
+            cols = row.xpath('./td/div[@class="TableText"]')
+            if cols[1].xpath('*//s'):
                 # deprecated
                 continue
-            res.append(str('%s%s' % (cols[1], cols[2])))
+            res.append('%s%s' % (cols[1].text_content(), cols[2].text_content()))
         return res
 
 
@@ -36,14 +35,14 @@ class WILLCOMScraper(Scraper):
     def do_scrape(self, doc):
         res = []
         sep = 0
-        for td in doc.xpath("//table[@width='100%' and @cellspacing='1' and @cellpadding='3']/tr/td"):
+        for td in doc.xpath("//*[@class='m_box']/table[@class='plan03']/tr/td"):
             if td.attrib.get('colspan') == "4":
                 sep += 1
-                if sep > 1:
+                if sep > 2:
                     break
             else:
                 if td.attrib.get('align') == 'center' and td.attrib.get('bgcolor') == 'white':
-                    txt = td[0].text
+                    txt = td.text.strip()
                     if txt:
-                        res.append(str(txt))
+                        res.append(txt)
         return res
