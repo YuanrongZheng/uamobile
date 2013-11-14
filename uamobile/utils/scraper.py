@@ -44,10 +44,10 @@ class EZWebCIDR(CIDR):
 
 
 class SoftBankCIDR(CIDR):
-    url = 'http://creation.mb.softbank.jp/web/web_ip.html'
+    url = 'http://creation.mb.softbank.jp/mc/tech/tech_web/web_ipaddress.html'
 
     def do_scrape(self, doc):
-        return [x.text.strip() for x in doc.xpath("//div[@class='contents']/table/tr[7]/td/table/tr/td/table/tr/td")]
+        return [x.text.strip() for x in doc.xpath("//div[@id='contents']//table[@class='onece_table']/tr/th")]
 
 
 class WILLCOMCIDR(CIDR):
