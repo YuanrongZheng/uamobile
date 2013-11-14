@@ -187,6 +187,10 @@ def test_is_bogus():
     for ip, expected in (
         ('210.153.84.0', False),
         ('210.230.128.224', True),
+        ('202.229.176.1', False),
+        ('202.229.177.1', False),
+        ('202.229.178.1', False),
+        ('202.229.179.1', True),
         ):
         yield func, ip, None, expected
 
@@ -439,4 +443,9 @@ DATA = (
 
 # Added 2009/7/2
 ('DoCoMo/2.0 P10A(c100;TB;W24H15)', '2.0', '7.2', 'P10A', 100, True, 'P', '10A', {'status':'TB'}, (240, 320), False),
+
+# Added 2010/11/22
+('DoCoMo/2.0 L01B(c500;TB;W24H16)', '2.0', '7.2', 'L01B', 500, True, 'L', '01B', {'status':'TB'}, (240, 320), True),
+('DoCoMo/2.0 SH01C(c500;TB;W24H16)', '2.0', '7.2', 'SH01C', 500, True, 'SH', '01C', {'status':'TB'}, (240, 320), True),
+('DoCoMo/2.0 N02C(c500;TB;W24H16)', '2.0', '7.2', 'N02C', 500, True, 'N', '02C', {'status':'TB'}, (240, 320), True),
 )
