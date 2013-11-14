@@ -56,14 +56,14 @@ class WILLCOMCIDR(CIDR):
     def do_scrape(self, doc):
         res = []
         sep = 0
-        for td in doc.xpath("//table[@width='100%' and @cellspacing='1' and @cellpadding='3']/tr/td"):
+        for td in doc.xpath("//*[@class='m_box']/table[@class='plan03']/tr/td"):
             if td.attrib.get('colspan') == "4":
                 sep += 1
                 if sep > 2:
                     break
             else:
                 if td.attrib.get('align') == 'center' and td.attrib.get('bgcolor') == 'white':
-                    txt = td[0].text
+                    txt = td.text.strip()
                     if txt:
                         res.append(txt)
         return res
