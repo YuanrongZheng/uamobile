@@ -50,7 +50,7 @@ def main():
         if not has_json:
             print "To use 'json' format, you need json or simplejson module"
             sys.exit(1)
-        dump_func = lambda result: json.dumps(result, ensure_ascii=False, indent=2)
+        dump_func = lambda result: json.dumps(result, encoding='utf-8', ensure_ascii=False, indent=2).encode('utf-8')
     elif opts.format == 'yaml':
         if not has_yaml:
             print "To use 'yaml' format, you need PyYAML"
