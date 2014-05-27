@@ -2,10 +2,10 @@
 from uamobile.scrapers.base import Scraper
 
 class DoCoMoScraper(Scraper):
-    url = 'http://www.nttdocomo.co.jp/service/imode/make/content/ip/'
+    url = 'https://www.nttdocomo.co.jp/service/developer/make/content/ip/'
 
     def do_scrape(self, doc):
-        return [str(x.text) for x in doc.xpath('//div[@class="boxArea" and count(preceding-sibling::*)=2]/div/div[@class="section"]/ul[@class="normal txt" and position()=1]/li')]
+        return [str(x.text) for x in doc.xpath('//div[@class="boxArea" and count(preceding-sibling::*)=2]/div/div[@class="section"]/ul[@class="normal txt" and position()=2]/li')]
 
 
 class EZWebScraper(Scraper):
@@ -13,37 +13,39 @@ class EZWebScraper(Scraper):
 
     def do_scrape(self, doc):
         res = []
-        rows = doc.xpath("""//table[@cellspacing="1"]/tr[@bgcolor="#ffffff"]""")
-        for row in rows:
-            cols = row.xpath('./td/div[@class="TableText"]/text()')
-            if len(cols) == 4:
-                # deprecated
-                continue
+        table1_rows = doc.xpath("""//table[@height="100%" and @summary=""]/tr/td/table[@summary=""]/tr/td/table/tr/td/table/tr/td/table/tr/td/table/tr[@bgcolor="#ffffff"]""")
+        for row in table1_rows:
+            cols = row.xpath('./td/div[@class="TableText"]//text()')
+            res.append(str('%s%s' % (cols[1], cols[2])))
+        table2_rows = doc.xpath("""//table[@height="100%" and @summary=""]/tr/td/table[@summary=""]/tr/td/table/tr/td/table/tr/td/table/tr[@bgcolor="#ffffff"]""")
+        for row in table2_rows:
+            cols = row.xpath('./td/div[@class="TableText"]//text()')
             res.append(str('%s%s' % (cols[1], cols[2])))
         return res
 
 
 class SoftBankScraper(Scraper):
-    url = 'http://creation.mb.softbank.jp/web/web_ip.html'
+    url = 'http://creation.mb.softbank.jp/mc/tech/tech_web/web_ipaddress.html'
 
     def do_scrape(self, doc):
-        return [str(x.text.strip()) for x in doc.xpath("//div[@class='contents']/table/tr[7]/td/table/tr/td/table/tr/td")]
+        return [str(x.text.strip()) for x in doc.xpath("//div[@id='contents']/div[@id='contents_sub']/div[@class='right_contents']//table[1]/tr/th")]
 
 
-class WILLCOMScraper(Scraper):
+class WillcomScraper(Scraper):
     url = 'http://www.willcom-inc.com/ja/service/contents_service/create/center_info/index.html'
 
     def do_scrape(self, doc):
         res = []
         sep = 0
-        for td in doc.xpath("//table[@width='100%' and @cellspacing='1' and @cellpadding='3']/tr/td"):
+        for td in doc.xpath("//div[@id='wrapper']/div/div/div/table[@class='plan03']/tr/td"):
             if td.attrib.get('colspan') == "4":
-                sep += 1
-                if sep > 1:
+                if u'削除' in td.text:
                     break
             else:
                 if td.attrib.get('align') == 'center' and td.attrib.get('bgcolor') == 'white':
-                    txt = td[0].text
+                    txt = td.text
+                    if txt is not None:
+                        txt = txt.strip(ur'\u0009\u000a\u000d\u0020\u00a0')
                     if txt:
                         res.append(str(txt))
         return res
