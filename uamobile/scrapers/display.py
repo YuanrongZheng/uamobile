@@ -3,7 +3,7 @@ import re
 from uamobile.scrapers.base import Scraper
 
 class DoCoMoScraper(Scraper):
-    url = 'http://www.nttdocomo.co.jp/service/imode/make/content/spec/screen_area/index.html'
+    url = 'https://www.nttdocomo.co.jp/service/developer/make/content/spec/screen_area/index.html'
 
     def do_scrape(self, doc):
         tables = [x for x in doc.xpath('//table') if x.attrib.get('summary', '').startswith(u'iモード')]
@@ -11,7 +11,7 @@ class DoCoMoScraper(Scraper):
         res = {}
         for table in tables:
             imode2 = table.attrib.get('summary').startswith(u'iモードブラウザ2.0')
-            for columns in table.xpath('tr'):
+            for columns in table.findall('tr'):
                 if imode2:
                     model_index = 0
                     display_index = 4
