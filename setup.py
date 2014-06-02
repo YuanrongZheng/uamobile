@@ -9,7 +9,7 @@ major, minor, micro, releaselevel, serial = sys.version_info
 if (major, minor) < (2, 7):
     INSTALL_REQUIRES.append('importlib')
 
-VERSION = '0.3.0moriyoshi2'
+VERSION = '0.3.0moriyoshi3'
 
 setup(name='uamobile',
       version=VERSION,
